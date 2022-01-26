@@ -78,9 +78,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>O:\!c\VC++Libs\SDL2-2.0.20\include;O:\!c\GBCboy\GBCboy\include;$(IncludePath)</IncludePath>
-    <LibraryPath>O:\!c\VC++Libs\SDL2-2.0.20\lib\x64;$(LibraryPath)</LibraryPath>
-    <SourcePath>O:\!c\GBCboy\GBCboy\src;$(SourcePath)</SourcePath>
+    <IncludePath>$(ProjectDir)libs\SDL2-2.0.20\include;$(ProjectDir)include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)libs\SDL2-2.0.20\lib\x64;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(ProjectDir)src;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
