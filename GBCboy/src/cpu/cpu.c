@@ -14,6 +14,7 @@ void rlca(uint8_t* operands)
 	gbc_regs.F = 0x10 & (gbc_regs.A = (0xFE & (gbc_regs.A << 1)) | (0x01 & (gbc_regs.F >> 4)));
 	gbc_regs.F = 0xE0 & 0x00; // reset flags
 }
+void ld_a16_sp(uint8_t* operands) { return; };
 
 const struct cpu_instruction_t gbc_optable[256] = {
 	/*0x00*/{ "NOP", 0, 4, nop },
@@ -23,7 +24,8 @@ const struct cpu_instruction_t gbc_optable[256] = {
 	/*0x04*/{ "INC B", 0, 4, inc_b },
 	/*0x05*/{ "DEC B", 0, 4, dec_b },
 	/*0x06*/{ "LD B, 0x%02X", 1, 8, ld_b_d8 },
-	/*0x07*/{ "RLCA", 0, 4, rlca }
+	/*0x07*/{ "RLCA", 0, 4, rlca },
+	/*0x08*/{ "LD (a16), SP", 2, 20, ld_a16_sp }
 };
 
 char* gbc_cpu_errmsg = NULL;
