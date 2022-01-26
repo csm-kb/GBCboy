@@ -3,6 +3,19 @@
 #include <SDL.h>
 #include <renderer/GBCRenderer.h>
 
+/*
+ * This is the primary entry point into GBCboy.
+ *
+ * The system has an 8-bit microprocessor linked to an LCD driver (our SDL2 renderer), an audio
+ * amplifier (through an external volume control), a 6-pin sub-connector, the operating keys,
+ * some display memory (16 kB), and some working memory (32 kB).
+ *
+ * The CPU is the 8-bit SHARP LR35902, with architecture like so: https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
+ * It runs at exactly 8.4 MHz, and is a hybrid of the Intel 8080 and Zilog Z80 (which are binary-compatible).
+ *
+ * It boots from a mask ROM program loaded from a game pak.
+ */
+
 int main(int argc, char* argv[])
 {
 	struct GBCRenderer* renderer = malloc(sizeof(struct GBCRenderer));
@@ -53,7 +66,9 @@ int main(int argc, char* argv[])
 		}
 		SDL_UnlockSurface(renderer->pixels);
 
-	} while (GBCRenderer_Render(renderer, delta));
+		GBCRenderer_Render(renderer, delta);
+
+	} while (renderer->running);
 
 	// clean up renderer
 	GBCRenderer_Quit(renderer);

@@ -28,6 +28,9 @@ int GBCRenderer_Init(struct GBCRenderer* renderer)
 
 int GBCRenderer_Render(struct GBCRenderer* renderer, double delta)
 {
+	if (!renderer->running)
+		return renderer->running;
+
 	// copy to window
 	SDL_UpperBlitScaled(renderer->pixels, NULL, renderer->surface, NULL);
 	SDL_UpdateWindowSurface(renderer->window);
