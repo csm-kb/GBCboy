@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <renderer/GBCRenderer.h>
+#include <gbcpu/cpu.h>
 
 /*
  * This is the primary entry point into GBCboy.
@@ -10,21 +11,41 @@
  * amplifier (through an external volume control), a 6-pin sub-connector, the operating keys,
  * some display memory (16 kB), and some working memory (32 kB).
  *
+ * -- MBC1/3 Info: --
+ * MBC1 has two different max memory modes:
+ *	- 16Mbit ROM / 8 KB RAM (<-- default)
+ *	- 4 MBit ROM / 32KB RAM
+ * Writing a value 0bxxxxxxxS (0 = 16/8, 1=4/32) into 6000-7FFF area will select the mode
+ *
+ * The display memory range 8000-9FFF is switchable between two banks.
+ * The main memory range D000-DFFF is switchable between seven banks (for a total of 8: +bank 0 @ C000-CFFF)
+ * The read-only memory range 4000-7FFF is switchable between 0bx####### = 32,768 unique banks
+ *		- write val to 2000-3FFF area to select
+ *
+ * ------------------
  * The CPU is the 8-bit SHARP LR35902, with architecture like so: https://www.pastraiser.com/cpu/gameboy/gameboy_opcodes.html
  * It runs at exactly 8.4 MHz, and is a hybrid of the Intel 8080 and Zilog Z80 (which are binary-compatible).
  *
  * It boots from a mask ROM program loaded from a game pak.
  */
 
+#define GBC_MEM_SIZE		0xFFFF
+
+#define GBC_MAIN_MEM_BASE	0xC000
+#define GBC_VIDEOMEM_BASE	0x8000
+
 int main(int argc, char* argv[])
 {
+	// initialize renderer
 	struct GBCRenderer* renderer = malloc(sizeof(struct GBCRenderer));
 
-	// initialize renderer
 	if (GBCRenderer_Init(renderer))
 	{
 		return 1;
 	}
+
+	// initialize cpu-related stuff
+	gbc_mem_t* memory = malloc(sizeof(gbc_mem_t) * GBC_MAIN_MEM);
 
 	// render until quit
 	SDL_Event event;

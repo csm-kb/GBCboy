@@ -1,7 +1,7 @@
 #ifndef GBCBOY_CPU_H
 #define GBCBOY_CPU_H
 
-#include <stdint.h>
+#include <gbcpu/types.h>
 
 /// <summary>
 /// Represents a GBC's CPU registers.
